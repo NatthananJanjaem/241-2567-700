@@ -1,135 +1,116 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const mysql = require('mysql2/promise');  // Using mysql2 with promise support
+const mysql = require('mysql2/promise');
+const cors = require('cors');
 const app = express();
 
 const port = 8000;
 app.use(bodyParser.json());
-
-let conn = null;
-
-// Initialize MySQL connection
-const initMYSQL = async () => {
-    try {
-        conn = await mysql.createConnection({
-            host: 'localhost',
-            user: 'root',
-            password: 'root',
-            database: 'webdb',
-            port: 8820,
-        });
-        console.log('Database connected successfully');
-    } catch (error) {
-        console.error('Failed to connect to MySQL:', error.message);
-        process.exit(1); // Exit process if DB connection fails
-    }
-};
-
-// Test DB connection
-app.get('/testdb', async (req, res) => {
-    try {
-        const [results] = await conn.query('SELECT * FROM users');
-        res.json(results);
-    } catch (error) {
-        console.error('Error:', error.message);
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// Test DB with a specific query (example)
-app.get('/testdbnew', async (req, res) => {
-    try {
-        const [results] = await conn.query('SELECT idx FROM users');
-        res.json(results);
-    } catch (error) {
-        console.error('Error:', error.message);
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// GET /users - Fetch all users
+app.use(cors());
+ 
+let users = []
+ 
+let conn = null
+const initMySQL = async () => {
+    conn = await mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: 'root',
+        database: 'webdb',
+        port: 8830
+    })
+}
+ 
+// path = GET /users สำหรับ get users ทั้งหมดที่บันทึกไว้
 app.get('/users', async (req, res) => {
-    try {
-        const [results] = await conn.query('SELECT * FROM users');
-        res.json(results);
-    } catch (error) {
-        console.error('Error:', error.message);
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// POST /users - Create a new user
+    const results = await conn.query('SELECT * FROM users')
+    res.json(results[0])
+})
+ 
+// path = POST /users สำหรับสร้าง users ใหม่บันทึกเข้าไป
 app.post('/users', async (req, res) => {
-    try {
-        const user = req.body;
-        const [results] = await conn.query('INSERT INTO users SET ?', user);
+   
+    try{
+        let user = req.body;
+        const results = await conn.query('INSERT INTO users SET ?', user)
         res.json({
             message: 'Create user successfully',
-            data: results
-        });
-    } catch (error) {
-        console.error('Error:', error.message);
-        res.status(500).json({ error: error.message });
+            data: results[0]
+        })
+    }catch(error){
+        console.error('error: ', error.message)
+        res.status(500).json({
+            message: 'something went wrong',
+            errorMessage: error.message
+        })
     }
-});
-
-// GET /user/:id - Fetch user by ID
-app.get('/user/:id', async (req, res) => {
-    const id = req.params.id;
+})
+ 
+// path = GET /users/:id สำหรับดึง users รายคนออกมา
+app.get('/users/:id', async (req, res) => {
     try {
-        const [user] = await conn.query('SELECT * FROM users WHERE idx = ?', [id]);
-        if (user.length > 0) {
-            res.json(user[0]);
-        } else {
-            res.status(404).json({ error: 'User not found' });
+        let id = req.params.id;
+        const results = await conn.query('SELECT * FROM users WHERE id = ?', id)
+        if (results[0].length > 0) {
+            throw { statusCode: 404, message: 'User not found' }
         }
-    } catch (error) {
-        console.error('Error:', error.message);
-        res.status(500).json({ error: error.message });
+
+            res.json(results[0][0])
+        
+    }catch(error){
+        console.error('error: ', error.message)
+        res.status(500).json({
+            message: 'something went wrong',
+            errorMessage: error.message
+        })
+
     }
-});
-
-// PUT /user/:id - Update user by ID
-app.put('/user/:id', async (req, res) => {
-    const id = req.params.id;
-    const updateUser = req.body;
-
-    try {
-        const [results] = await conn.query('UPDATE users SET ? WHERE idx = ?', [updateUser, id]);
-        if (results.affectedRows > 0) {
-            res.json({
-                message: 'Update user successfully',
-                data: updateUser
-            });
-        } else {
-            res.status(404).json({ error: 'User not found' });
-        }
-    } catch (error) {
-        console.error('Error:', error.message);
-        res.status(500).json({ error: error.message });
+})
+ 
+//path: PUT /users/:id สำหรับแก้ไข users รายคน (ตาม id ที่บันทึกเข้าไป)
+app.put('/users/:id', async (req, res) => {
+ 
+    try{
+        let id = req.params.id;
+        let updateUser = req.body;
+        const results = await conn.query(
+            'UPDATE INTO users SET ? WHERE id = ?', 
+            [updateUser, id])
+        res.json({
+            message: 'Update user successfully',
+            data: results[0]
+        })
+    }catch(error){
+        console.error('error: ', error.message)
+        res.status(500).json({
+            message: 'something went wrong',
+            errorMessage: error.message
+        })
     }
-});
-
-// DELETE /user/:id - Delete user by ID
-app.delete('/user/:id', async (req, res) => {
-    const id = req.params.id;
-    try {
-        const [results] = await conn.query('DELETE FROM users WHERE idx = ?', [id]);
-        if (results.affectedRows > 0) {
-            res.json({
-                message: 'Delete user successfully'
-            });
-        } else {
-            res.status(404).json({ error: 'User not found' });
-        }
-    } catch (error) {
-        console.error('Error:', error.message);
-        res.status(500).json({ error: error.message });
+})
+ 
+//path: DELETE /users/:id สำหรับลบ users รายคน (ตาม id ที่บันทึกเข้าไป)
+app.delete('/users/:id', async (req, res) => {
+    try{
+        let id = req.params.id;
+        const results = await conn.query('DELETE from users WHERE id = ?', id)
+        res.json({
+            message: 'Delete user successfully',
+            data: results[0]
+        })
+       
+    }catch(error){
+        console.error('error: ', error.message)
+        res.status(500).json({
+            message: 'something went wrong',
+            errorMessage: error.message
+        })
     }
+    
 });
 
-// Start the server and initialize the database connection
-app.listen(port, async () => {
-    await initMYSQL();
-    console.log('HTTP Server is running on port ' + port);
+app.listen(port, async (req,res) => {
+    await initMySQL()
+    console.log(`Server is running on port ${port}`)
 });
+    
