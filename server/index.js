@@ -26,10 +26,10 @@ const initMySQL = async () => {
 
 const validateData = (userData) => {
     let errors = [];
-    if (!userData.firstName) {
+    if (!userData.firstname) {
         errors.push('กรุณากรอกชื่อ ❗');
     }
-    if (!userData.lastName) {
+    if (!userData.lastname) {
         errors.push('กรุณากรอกนามสกุล ❗');
     }
     if (!userData.age) {
