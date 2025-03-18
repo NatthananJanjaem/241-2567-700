@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!--form-->
+    <header>
+        <h2 class="logo">💗 Welcome 💗</h2>
+        <nav class="navigation">
+          <a href="#">Home</a>
+          <a href="#">About</a>
+          <a href="#">Services</a>
+          <a href="#">Contact</a>
+          <button class="btnLogin-popup">Login</button>
+        </nav>
+      </header>
+
+    <div class= "container">
+        <div class="header"> 
+            🐳 Register Form 🐳
+        </div> 
+        <form action="#"></form>
+        <div class="input-box">
+            <input name="firstname" type="text"required> 
+            <label>Firstname</label>
+        </div>
+
+        <div class="input-box">
+            <input name="lastname" type="text" required> <br>
+            <label>Lastname</label> 
+        </div>
+
+        <div class="input-box">
+            <input name="age"  type="number" required> 
+            <label>Age</label> 
+
+        </div>
+
+        <div class=" form-input"> <!-- อิสระ เชียนอะไรก็ได้-->
+            <div class="header-form">Sex</div>
+            <div class="flex">
+                <div> 
+                    <input name="gender"type="radio" value="ชาย"> Male 🚹
+                </div>
+                <div> 
+                     <input name="gender" type="radio" value="หญิง"> Female 🚺
+                </div>
+               <div>
+                    <input name="gender" type="radio" value="ไม่ระบุ"> Not specified ❌
+               </div>
+            </div>
+        </div> 
+        <div class="form-input">
+            <div class="header-form">Interests</div>
+            <div class="line">
+                <div>
+                    <input name="interest" type="checkbox" value="อ่านหนังสือ"> Read a book 📖
+                </div>
+                <div>
+                    <input name="interest" type="checkbox" value="ดูหนัง">  Watch a movie 🎬
+                </div>
+                <div>
+                    <input name="interest" type="checkbox" value="ฟังเพลง"> Listen to music 🎵
+                </div>
+
+            </div>
+            
+        </div>
+        <div class="form-input">
+            <div class="header-des">Description</div>
+        <textarea name="description"></textarea>
+        </div>
+        <div id=message class="message"></div>
+
+
+        <div class="center">
+            <button onclick="submitData()" class="button">Submit</button>
+        </div>
+       <a href="user.html" class="info animate">Go to User management</a>
+        <form action="#"></form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+    <script src="index.js"></script>
+    
+</body>
+</html>
