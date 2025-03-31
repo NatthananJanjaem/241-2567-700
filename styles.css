@@ -1,66 +1,176 @@
-@font-face{
-    font-family:'Kanit';
+/*ตรงนี้ CSS สำหรับตกแต่ง(id class)*/
+@font-face { 
+    font-family: 'Kanit';
     src: url('./Kanit/Kanit-Regular.ttf');
 }
-body{
-    font-family:'Kanit';
+body {
+    font-family: 'Kanit';
+    font-size: 14px;
+    background-color: #b3e1ff;
+    background-image: url('');
 }
-.container{
+.container {
     width: 100%;
     max-width: 640px;
     margin-left: auto;
     margin-right: auto;
-    background-color: azure;
     padding: 20px;
-    box-sizing: border-box;
+    box-sizing: border-box ;
 }
 .header{
+    font-size: 36px;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #FFFFFF;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, 
+        
+        #4B0082, /* ม่วงเข้ม */
+        #00008B, /* น้ำเงินเข้ม */
+        #00BFFF, /* ฟ้าสด */
+        #00CED1, /* เขียวอมฟ้า */
+        #90EE90  /* เขียวอ่อน */
+    );
+    padding: 20px 0;
+    border-radius: 8px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    animation: rainbow-shift 10s linear infinite;
+    background-size: 400% 100%; /* เพิ่มขนาดพื้นหลังให้ใหญ่ขึ้น */
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+    margin-left: 2px;
+    border-radius: 10px;
+}
+th, td{
+    padding: 8px;
+    border-bottom: 1px solid #2A2F4F;
+    color: #000000;
+    text-align: center;
+}
+th{
+    color: #f3eae0;
+    background-color: #8973e8;
+}
+tr:nth-child(odd){background-color: #ffffff}
+
+.delete, .edit{
+    border:  solid #000000;
+    background-color: #73a2ff;
+    color: #ffffff;
+    font-weight:550;
+    font-size: 12px;
+    margin-right: 10px;
+}
+
+.header-back{
     font-size: 30px;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    color: #2A2F4F;
+    font-weight:900;
+    background-color: #ffffff;
+    padding: 10px ;
 }
+.info{
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ffffff;
+    font-weight: bold;
+    background-color: #5a79b6;
+    padding: 5px ;
+}
+
 .header-form{
-   width: 140px;
+    font-weight: bold;
+    font-size: 15px;
+    width: 140px;
+    color: #000000;
+}
+.header-des{
+    font-weight: bold;
+    font-size: 15px;
+    width: 140px;
+    color: #000000;
+    margin-bottom: 10px;
 }
 .flex{
-   display: flex;
+    display: flex;
+    color: #000000;
+}
+.line{
+    color: #000000;
 }
 .form-input{
     margin-bottom: 10px;
 }
-input.form, textarea {
-    border: 1px solid #ccc;
+
+input.form, textarea{
+    border: 2px solid #7ecae6;
     width: 100%;
+}
+
+textarea:focus, input:focus{
+    background-color: #ccbfcd;
 }
 .center{
     text-align: center;
 }
+
 .button{
-    border: 0;
+    transition-duration: 0.4s;
+    border: 2px solid #ffffff;
+    background-color: #72e3ff;
     width: 50%;
     height: 40px;
+    color: #2A2F4F;
+    font-size: 15px;
+    font-weight: bold;
+}
+.button:hover {
+    background-color: #917FB3; 
+    border: 2px solid #917FB3;
+    color: #FDE2F3;
+}
+
+.img{
+    margin-top: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+}
+input:focus{
+    background-color: #ccbfcd;
+    
 }
 
 .message{
-    margin-top: 10px;
+    background-color: rgb(255, 255, 255);
     padding: 10px;
-    background-color: lightgray;
+    margin-bottom: 10px;
     display: none;
 }
 .message.success{
-    background-color: lightgreen;
+    background-color: rgb(51, 195, 94);
     display: block;
 }
-.message.error{
-    background-color: lightcoral;
+.message.danger{
+    background-color: rgb(255, 30, 30);
     display: block;
 }
-
-@media screen and (max-width: 768px){
+@media screen and (max-width: 768px) {
     .flex{
         flex-direction: column;
     }
     .header{
-        font-size: 20px;
+        font-size: 24px;
     }
 }
